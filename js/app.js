@@ -13,6 +13,9 @@ const myGameArea = {
   clear() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   },
+  stop() {
+    clearInterval(this.interval);
+  },
 };
 
 // Tank player
@@ -29,16 +32,44 @@ class Tank {
   // draw tank
   update() {
     const img = document.getElementById('tank-player');
-    myGameArea.context.drawImage(img, this.x, this.y);
+    myGameArea.context.drawImage(img, this.x, this.y, this.width, this.height);
   }
 
   // change position
   newPos() {
-    this.x += this.speedX;
-    this.y += this.speedY;
+    if ((this.x + this.speedX > 0) && this.x + this.speedX < 470) {
+      this.x += this.speedX;
+    }
+    if ((this.y + this.speedY > 0) && (this.y + this.speedY < 470)) {
+      this.y += this.speedY;
+    }
+  }
+
+  left() { // limit left player
+    return this.x;
+  }
+
+  right() { // limit right player
+    return this.x + this.width;
+  }
+
+  top() { // limit top player
+    return this.y;
+  }
+
+  bottom() { // limit bottom player
+    return this.y + this.height;
+  }
+
+  crashWith(enemyTank) {
+    return !(
+      this.bottom() < enemyTank.top() ||
+      this.top() > enemyTank.bottom() ||
+      this.right() < enemyTank.left() ||
+      this.left() > enemyTank.right()
+    );
   }
 }
-
 
 class TankEnemy extends Tank {
   constructor(width, height, x, y) {
@@ -50,7 +81,7 @@ class TankEnemy extends Tank {
   // draw tank enemy
   update() {
     const img = document.getElementById('tank-enemy');
-    myGameArea.context.drawImage(img, this.x, this.y);
+    myGameArea.context.drawImage(img, this.x, this.y, this.width, this.height);
   }
 
   posGenerator() {
@@ -78,17 +109,42 @@ class TankEnemy extends Tank {
   }
 }
 
+// class Wall {
+//   constructor(width, height, x, y) {
+//     this.width = width;
+//     this.height = height;
+//     this.x = x;
+//     this.y = y;
+//   }
 
-const tank = new Tank(60, 60, 60, 60);
-const tankEnemy = new TankEnemy(60, 60, 230, 100);
+// }
+
+const tank = new Tank(30, 30, 60, 60);
+const tankEnemy1 = new TankEnemy(30, 30, 220, 100);
+const tankEnemy2 = new TankEnemy(30, 30, 50, 400);
+const tankEnemy3 = new TankEnemy(30, 30, 300, 400);
+const tankEnemy4 = new TankEnemy(30, 30, 80, 200);
+const tankEnemy5 = new TankEnemy(30, 30, 400, 40);
+
+const arrEnemies = [tankEnemy1, tankEnemy2, tankEnemy3];
+
+const checkGameOver = () => {
+  const crashed = arrEnemies.some(enemyTank => tank.crashWith(enemyTank));
+  if (crashed) {
+    myGameArea.stop();
+  }
+};
 
 const updateGameArea = () => {
   myGameArea.clear();
   tank.newPos();
   tank.update();
-  tankEnemy.posGenerator();
-  tankEnemy.newPos();
-  tankEnemy.update();
+  arrEnemies.forEach((enemy) => {
+    enemy.posGenerator();
+    enemy.newPos();
+    enemy.update();
+  });
+  checkGameOver();
 };
 
 // start game
