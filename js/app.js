@@ -1,3 +1,4 @@
+/* eslint-disable react/no-multi-comp */
 // Inicial config
 const myGameArea = {
   frames: 0,
@@ -19,7 +20,7 @@ const myGameArea = {
 };
 
 // Tank player
-class Tank {
+class Component {
   constructor(width, height, x, y) {
     this.width = width;
     this.height = height;
@@ -61,7 +62,7 @@ class Tank {
     return this.y + this.height;
   }
 
-  crashWith(enemyTank) {
+  crashWithEnemy(enemyTank) {
     return !(
       this.bottom() < enemyTank.top() ||
       this.top() > enemyTank.bottom() ||
@@ -69,9 +70,18 @@ class Tank {
       this.left() > enemyTank.right()
     );
   }
+
+  crashWithWall(wall) {
+    return !(
+      this.bottom() < wall.top() ||
+      this.top() > wall.bottom() ||
+      this.right() < wall.left() ||
+      this.left() > wall.right()
+    );
+  }
 }
 
-class TankEnemy extends Tank {
+class TankEnemy extends Component {
   constructor(width, height, x, y) {
     super(width, height, x, y);
     this.speedX = 0;
@@ -109,17 +119,20 @@ class TankEnemy extends Tank {
   }
 }
 
-// class Wall {
-//   constructor(width, height, x, y) {
-//     this.width = width;
-//     this.height = height;
-//     this.x = x;
-//     this.y = y;
-//   }
+class Wall extends Component {
+  constructor(width, height, x, y) {
+    super(width, height, x, y)
+  }
 
-// }
+  update() {
+    const img = document.getElementById('wall');
+    myGameArea.context.drawImage(img, this.x, this.y, this.width, this.height);
+  }
+}
+// Player
+const tank = new Component(30, 30, 30, 60);
 
-const tank = new Tank(30, 30, 60, 60);
+// Enemies
 const tankEnemy1 = new TankEnemy(30, 30, 220, 100);
 const tankEnemy2 = new TankEnemy(30, 30, 50, 400);
 const tankEnemy3 = new TankEnemy(30, 30, 300, 400);
@@ -128,9 +141,20 @@ const tankEnemy5 = new TankEnemy(30, 30, 400, 40);
 
 const arrEnemies = [tankEnemy1, tankEnemy2, tankEnemy3];
 
+// Map
+const wall1 = new Wall(15, 15, 80, 80);
+const wall2 = new Wall(15, 15, 95, 80);
+const wall3 = new Wall(15, 15, 80, 95);
+const wall4 = new Wall(15, 15, 95, 95);
+const wall5 = new Wall(15, 15, 80, 110);
+const wall6 = new Wall(15, 15, 95, 110);
+
+const arrWalls = [wall1, wall2, wall3, wall4, wall5, wall6];
+
 const checkGameOver = () => {
-  const crashed = arrEnemies.some(enemyTank => tank.crashWith(enemyTank));
-  if (crashed) {
+  const crashedEnemy = arrEnemies.some(enemyTank => tank.crashWithEnemy(enemyTank));
+  const crashedWall = arrWalls.some(wall => tank.crashWithWall(wall));
+  if (crashedEnemy || crashedWall) {
     myGameArea.stop();
   }
 };
@@ -143,6 +167,9 @@ const updateGameArea = () => {
     enemy.posGenerator();
     enemy.newPos();
     enemy.update();
+  });
+  arrWalls.forEach((wall) => {
+    wall.update();
   });
   checkGameOver();
 };
