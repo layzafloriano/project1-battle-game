@@ -9,7 +9,7 @@ const myGameArea = {
     this.context = this.canvas.getContext('2d');
     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
     // eslint-disable-next-line no-use-before-define
-    this.interval = setInterval(updateGameArea, 20);
+    this.interval = setInterval(updateGameArea, 40);
   },
   clear() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -28,11 +28,12 @@ class Component {
     this.y = y;
     this.speedX = 0;
     this.speedY = 0;
+    this.imageId = 'tank-player-down';
   }
 
   // draw tank
   update() {
-    const img = document.getElementById('tank-player');
+    const img = document.getElementById(this.imageId);
     myGameArea.context.drawImage(img, this.x, this.y, this.width, this.height);
   }
 
@@ -86,33 +87,52 @@ class TankEnemy extends Component {
     super(width, height, x, y);
     this.speedX = 0;
     this.speedY = 0;
+    this.imageId = 'tank-enemy-down';
   }
 
   // draw tank enemy
   update() {
-    const img = document.getElementById('tank-enemy');
+    const img = document.getElementById(this.imageId);
     myGameArea.context.drawImage(img, this.x, this.y, this.width, this.height);
   }
+
+  // verifyWall() {
+  //   console.log(arrWalls.some(wall => this.crashWithWall(wall)));
+  //   return arrWalls.some(wall => this.crashWithWall(wall));
+  // }
 
   posGenerator() {
     myGameArea.frames += 1;
     const arrSpeed = ['x+1', 'x-1', 'y+1', 'y-1'];
     const posSelec = arrSpeed[Math.floor(Math.random() * arrSpeed.length)];
     // eslint-disable-next-line default-case
-    if (myGameArea.frames % 50 === 0) {
+    // const stopWalk = this.verifyWall();
+    if (myGameArea.frames % 20 === 0) {
       // eslint-disable-next-line default-case
       switch (posSelec) {
         case 'x+1':
-          this.x += 30;
+          if (this.x < 480) {
+            this.imageId = 'tank-enemy-right';
+            this.x += 20;
+          }
           break;
         case 'x-1':
-          this.x -= 30;
+          if (this.x > 20) {
+            this.imageId = 'tank-enemy-left';
+            this.x -= 20;
+          }
           break;
         case 'y+1':
-          this.y += 30;
+          if (this.y < 480) {
+            this.imageId = 'tank-enemy-up';
+            this.y += 20;
+          }
           break;
         case 'y-1':
-          this.y -= 30;
+          if (this.y > 20) {
+            this.imageId = 'tank-enemy-down';
+            this.y -= 20;
+          }
           break;
       }
     }
@@ -120,9 +140,9 @@ class TankEnemy extends Component {
 }
 
 class Wall extends Component {
-  constructor(width, height, x, y) {
-    super(width, height, x, y)
-  }
+  // constructor(width, height, x, y) {
+  //   super(width, height, x, y)
+  // }
 
   update() {
     const img = document.getElementById('wall');
@@ -130,7 +150,7 @@ class Wall extends Component {
   }
 }
 // Player
-const tank = new Component(30, 30, 30, 60);
+const tank = new Component(30, 30, 180, 5);
 
 // Enemies
 const tankEnemy1 = new TankEnemy(30, 30, 220, 100);
@@ -142,20 +162,29 @@ const tankEnemy5 = new TankEnemy(30, 30, 400, 40);
 const arrEnemies = [tankEnemy1, tankEnemy2, tankEnemy3];
 
 // Map
-const wall1 = new Wall(15, 15, 80, 80);
-const wall2 = new Wall(15, 15, 95, 80);
-const wall3 = new Wall(15, 15, 80, 95);
-const wall4 = new Wall(15, 15, 95, 95);
-const wall5 = new Wall(15, 15, 80, 110);
-const wall6 = new Wall(15, 15, 95, 110);
 
-const arrWalls = [wall1, wall2, wall3, wall4, wall5, wall6];
+// wall1
+const wall1 = new Wall(50, 160, 60, 50);
+const wall2 = new Wall(50, 160, 170, 50);
+const wall3 = new Wall(50, 160, 280, 50);
+const wall4 = new Wall(50, 160, 390, 50);
+const wall5 = new Wall(50, 160, 60, 290);
+const wall6 = new Wall(50, 160, 170, 290);
+const wall7 = new Wall(50, 160, 280, 290);
+const wall8 = new Wall(50, 160, 390, 290);
+// const wall9 = new Wall(30, 30, 80, 200);
+// const wall10 = new Wall(30, 30, 110, 200);
+
+
+const arrWalls = [wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8];
 
 const checkGameOver = () => {
   const crashedEnemy = arrEnemies.some(enemyTank => tank.crashWithEnemy(enemyTank));
   const crashedWall = arrWalls.some(wall => tank.crashWithWall(wall));
   if (crashedEnemy || crashedWall) {
     myGameArea.stop();
+    const img = document.getElementById('game-over');
+    myGameArea.context.drawImage(img, 150, 150, 200, 200);
   }
 };
 
@@ -181,15 +210,19 @@ document.onkeydown = (e) => {
   // eslint-disable-next-line default-case
   switch (e.keyCode) {
     case 38: // up arrow
+      tank.imageId = 'tank-player-up';
       tank.speedY -= 1;
       break;
     case 40: // down arrow
+      tank.imageId = 'tank-player-down';
       tank.speedY += 1;
       break;
     case 37: // left arrow
+      tank.imageId = 'tank-player-left';
       tank.speedX -= 1;
       break;
     case 39: // right arrow
+      tank.imageId = 'tank-player-right';
       tank.speedX += 1;
       break;
   }
