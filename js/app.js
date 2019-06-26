@@ -25,7 +25,7 @@ const myGameArea = {
     const points = Math.floor(this.frames / 5);
     this.context.font = '18px arial';
     this.context.fillStyle = 'white';
-    this.context.fillText("Score: " + points, 400, 40);
+    this.context.fillText('Score: ' + points, 400, 40);
   }
 };
 
@@ -161,8 +161,6 @@ const tank = new Component(30, 30, 180, 5);
 
 // Position Steps
 
-const posStepsX = [];
-
 const posStepsA = ['x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1'];
 
 const posStepsB = ['x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1'];
@@ -260,9 +258,12 @@ document.onkeyup = () => {
   tank.speedY = 0;
 };
 
-document.getElementById('start-button').onclick = () => {
-  myGameArea.start();
+window.onload = () => {
+  document.getElementById('start-button').onclick = () => {
+    myGameArea.start();
+  };
 };
 
-
-myGameArea.start();
+document.getElementById('reload-button').onclick = () => {
+  document.location.reload(true);
+};
