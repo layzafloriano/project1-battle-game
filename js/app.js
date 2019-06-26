@@ -1,6 +1,9 @@
 /* eslint-disable react/no-multi-comp */
 
 // Inicial config
+const canvasBoard = document.getElementById('game-area');
+
+// canvasBoard.insertBefore(this.canvas, canvasBoard.childNodes[0]);
 const myGameArea = {
   frames: 0,
   canvas: document.createElement('canvas'),
@@ -8,7 +11,7 @@ const myGameArea = {
     this.canvas.width = 500;
     this.canvas.height = 500;
     this.context = this.canvas.getContext('2d');
-    document.body.insertBefore(this.canvas, document.body.childNodes[3]);
+    canvasBoard.insertBefore(this.canvas, canvasBoard.childNodes[3]);
     // eslint-disable-next-line no-use-before-define
     this.interval = setInterval(updateGameArea, 20);
   },
@@ -18,6 +21,12 @@ const myGameArea = {
   stop() {
     clearInterval(this.interval);
   },
+  score() {
+    const points = Math.floor(this.frames / 5);
+    this.context.font = '18px arial';
+    this.context.fillStyle = 'white';
+    this.context.fillText("Score: " + points, 400, 40);
+  }
 };
 
 // Tank player
@@ -101,8 +110,6 @@ class TankEnemy extends Component {
 
   posGenerator() {
     // eslint-disable-next-line default-case
-    // if (myGameArea.frames % 10 === 0) {
-    // if (Math.floor(Math.random() * 10) === 1) {
     const posSelec = this.posSteps[this.posIndex];
     this.posIndex = this.posIndex < this.posSteps.length ? this.posIndex + 1 : 0;
     this.speedX = 0;
@@ -114,7 +121,6 @@ class TankEnemy extends Component {
         if (this.x < 480) {
           this.imageId = 'tank-enemy-right';
           this.speedX += 1;
-          console.log(this.speedX);
         }
         break;
       case 'x-1':
@@ -127,7 +133,6 @@ class TankEnemy extends Component {
         if (this.y < 480) {
           this.imageId = 'tank-enemy-down';
           this.speedY += 1;
-          console.log(this.speedY);
         }
         break;
       case 'y-1':
@@ -155,7 +160,8 @@ class Wall extends Component {
 const tank = new Component(30, 30, 180, 5);
 
 // Position Steps
-const posStepsX = ['x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1'];
+
+const posStepsX = [];
 
 const posStepsA = ['x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1'];
 
@@ -163,27 +169,21 @@ const posStepsB = ['x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1'
 
 const posStepsC = ['x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1'];
 
-// const posStepsA = []
-// const posStepsB = []
-// const posStepsC = []
+const posStepsD = ['y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1'];
+
+const posStepsE = ['x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x-1', 'x-1'];
 
 // Enemies
 const tankEnemy1 = new TankEnemy(30, 30, 15, 10, posStepsA);
 const tankEnemy2 = new TankEnemy(30, 30, 240, 240, posStepsB);
 const tankEnemy3 = new TankEnemy(30, 30, 450, 10, posStepsC);
-const tankEnemy4 = new TankEnemy(30, 30, 80, 200, posStepsA);
-const tankEnemy5 = new TankEnemy(30, 30, 400, 40, posStepsA);
+const tankEnemy4 = new TankEnemy(30, 30, 235, 460, posStepsD);
+const tankEnemy5 = new TankEnemy(30, 30, 300, 460, posStepsE);
 
-// const tankEnemy1 = new TankEnemy(30, 30, 450, 10, posStepsC);
-// const tankEnemy2 = new TankEnemy(30, 30, 15, 10, posStepsB);
-// const tankEnemy3 = new TankEnemy(30, 30, 15, 10, posStepsB);
-// const tankEnemy4 = new TankEnemy(30, 30, 15, 10, posStepsB);
-
-const arrEnemies = [tankEnemy1, tankEnemy2, tankEnemy3];
+const arrEnemies = [tankEnemy1, tankEnemy2, tankEnemy3, tankEnemy4, tankEnemy5];
 
 // Map
 
-// wall1
 const wall1 = new Wall(50, 160, 60, 50);
 const wall2 = new Wall(50, 160, 170, 50);
 const wall3 = new Wall(50, 160, 280, 50);
@@ -196,6 +196,7 @@ const wall8 = new Wall(50, 160, 390, 290);
 
 const arrWalls = [wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8];
 
+// Collision
 const checkGameOver = () => {
   const crashedEnemy = arrEnemies.some(enemyTank => tank.crashWithEnemy(enemyTank));
   const crashedWall = arrWalls.some(wall => tank.crashWithWall(wall));
@@ -225,6 +226,7 @@ const updateGameArea = () => {
   arrWalls.forEach((wall) => {
     wall.update();
   });
+  myGameArea.score();
   checkGameOver();
 };
 
@@ -261,3 +263,6 @@ document.onkeyup = () => {
 document.getElementById('start-button').onclick = () => {
   myGameArea.start();
 };
+
+
+myGameArea.start();
