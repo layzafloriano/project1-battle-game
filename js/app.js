@@ -39,10 +39,10 @@ class Component {
 
   // change position
   newPos() {
-    if ((this.x + this.speedX > 0) && this.x + this.speedX < 470) {
+    if (this.x + this.speedX > 0 && this.x + this.speedX < 470) {
       this.x += this.speedX;
     }
-    if ((this.y + this.speedY > 0) && (this.y + this.speedY < 470)) {
+    if (this.y + this.speedY > 0 && this.y + this.speedY < 470) {
       this.y += this.speedY;
     }
   }
@@ -83,11 +83,13 @@ class Component {
 }
 
 class TankEnemy extends Component {
-  constructor(width, height, x, y) {
-    super(width, height, x, y);
+  constructor(width, height, x, y, positionSteps) {
+    super(width, height, x, y, positionSteps);
     this.speedX = 0;
     this.speedY = 0;
     this.imageId = 'tank-enemy-down';
+    this.posSteps = positionSteps;
+    this.posIndex = 0;
   }
 
   // draw tank enemy
@@ -96,42 +98,40 @@ class TankEnemy extends Component {
     myGameArea.context.drawImage(img, this.x, this.y, this.width, this.height);
   }
 
-  // verifyWall() {
-  //   console.log(arrWalls.some(wall => this.crashWithWall(wall)));
-  //   return arrWalls.some(wall => this.crashWithWall(wall));
-  // }
-
   posGenerator() {
     myGameArea.frames += 1;
-    const arrSpeed = ['x+1', 'x-1', 'y+1', 'y-1'];
-    const posSelec = arrSpeed[Math.floor(Math.random() * arrSpeed.length)];
     // eslint-disable-next-line default-case
     // const stopWalk = this.verifyWall();
     if (myGameArea.frames % 20 === 0) {
+      const posSelec = this.posSteps[this.posIndex];
+      this.posIndex = this.posIndex < this.posSteps.length - 1 ? this.posIndex + 1 : 0;
+      this.speedX = 0;
+      this.speedY = 0;
+
       // eslint-disable-next-line default-case
       switch (posSelec) {
         case 'x+1':
           if (this.x < 480) {
             this.imageId = 'tank-enemy-right';
-            this.x += 20;
+            this.speedX += 1;
           }
           break;
         case 'x-1':
           if (this.x > 20) {
             this.imageId = 'tank-enemy-left';
-            this.x -= 20;
+            this.speedX -= 1;
           }
           break;
         case 'y+1':
           if (this.y < 480) {
-            this.imageId = 'tank-enemy-up';
-            this.y += 20;
+            this.imageId = 'tank-enemy-down';
+            this.speedY += 1;
           }
           break;
         case 'y-1':
           if (this.y > 20) {
-            this.imageId = 'tank-enemy-down';
-            this.y -= 20;
+            this.imageId = 'tank-enemy-up';
+            this.speedY -= 1;
           }
           break;
       }
@@ -152,12 +152,20 @@ class Wall extends Component {
 // Player
 const tank = new Component(30, 30, 180, 5);
 
+// Position Steps
+const posStepsX = ['x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1'];
+const posStepsA = ['x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1'];
+
+const posStepsB = ['x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1'];
+
+const posStepsC = ['x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1'];
+
 // Enemies
-const tankEnemy1 = new TankEnemy(30, 30, 220, 100);
-const tankEnemy2 = new TankEnemy(30, 30, 50, 400);
-const tankEnemy3 = new TankEnemy(30, 30, 300, 400);
-const tankEnemy4 = new TankEnemy(30, 30, 80, 200);
-const tankEnemy5 = new TankEnemy(30, 30, 400, 40);
+const tankEnemy1 = new TankEnemy(30, 30, 15, 10, posStepsA);
+const tankEnemy2 = new TankEnemy(30, 30, 240, 240, posStepsB);
+const tankEnemy3 = new TankEnemy(30, 30, 450, 10, posStepsC);
+const tankEnemy4 = new TankEnemy(30, 30, 80, 200, posStepsA);
+const tankEnemy5 = new TankEnemy(30, 30, 400, 40, posStepsA);
 
 const arrEnemies = [tankEnemy1, tankEnemy2, tankEnemy3];
 
@@ -172,8 +180,6 @@ const wall5 = new Wall(50, 160, 60, 290);
 const wall6 = new Wall(50, 160, 170, 290);
 const wall7 = new Wall(50, 160, 280, 290);
 const wall8 = new Wall(50, 160, 390, 290);
-// const wall9 = new Wall(30, 30, 80, 200);
-// const wall10 = new Wall(30, 30, 110, 200);
 
 
 const arrWalls = [wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8];
