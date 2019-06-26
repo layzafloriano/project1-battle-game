@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap');
+
+
 * {
   margin: 0;
   padding: 0;
@@ -14,4 +17,21 @@ canvas {
   /* background-image: url('../images/grass.png');
   background-size: cover;
   background-repeat: no-repeat; */
+}
+
+h1 {
+  font-family: 'Press Start 2P';
+  font-size: 50px;
+  color: #FA291B;
+  margin: 30px 0;
+}
+
+button {
+  font-size: 30px;
+  padding: 10px;
+  background: #FF4636;
+  border: #FF4636 solid 1px;
+  color: yellow;
+  font-family: 'Press Start 2P';
+  margin-top: 20px;
 }

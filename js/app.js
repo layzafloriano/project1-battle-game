@@ -1,4 +1,5 @@
 /* eslint-disable react/no-multi-comp */
+
 // Inicial config
 const myGameArea = {
   frames: 0,
@@ -7,9 +8,9 @@ const myGameArea = {
     this.canvas.width = 500;
     this.canvas.height = 500;
     this.context = this.canvas.getContext('2d');
-    document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+    document.body.insertBefore(this.canvas, document.body.childNodes[3]);
     // eslint-disable-next-line no-use-before-define
-    this.interval = setInterval(updateGameArea, 40);
+    this.interval = setInterval(updateGameArea, 20);
   },
   clear() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -99,43 +100,44 @@ class TankEnemy extends Component {
   }
 
   posGenerator() {
-    myGameArea.frames += 1;
     // eslint-disable-next-line default-case
-    // const stopWalk = this.verifyWall();
-    if (myGameArea.frames % 20 === 0) {
-      const posSelec = this.posSteps[this.posIndex];
-      this.posIndex = this.posIndex < this.posSteps.length - 1 ? this.posIndex + 1 : 0;
-      this.speedX = 0;
-      this.speedY = 0;
+    // if (myGameArea.frames % 10 === 0) {
+    // if (Math.floor(Math.random() * 10) === 1) {
+    const posSelec = this.posSteps[this.posIndex];
+    this.posIndex = this.posIndex < this.posSteps.length ? this.posIndex + 1 : 0;
+    this.speedX = 0;
+    this.speedY = 0;
 
-      // eslint-disable-next-line default-case
-      switch (posSelec) {
-        case 'x+1':
-          if (this.x < 480) {
-            this.imageId = 'tank-enemy-right';
-            this.speedX += 1;
-          }
-          break;
-        case 'x-1':
-          if (this.x > 20) {
-            this.imageId = 'tank-enemy-left';
-            this.speedX -= 1;
-          }
-          break;
-        case 'y+1':
-          if (this.y < 480) {
-            this.imageId = 'tank-enemy-down';
-            this.speedY += 1;
-          }
-          break;
-        case 'y-1':
-          if (this.y > 20) {
-            this.imageId = 'tank-enemy-up';
-            this.speedY -= 1;
-          }
-          break;
-      }
+    // eslint-disable-next-line default-case
+    switch (posSelec) {
+      case 'x+1':
+        if (this.x < 480) {
+          this.imageId = 'tank-enemy-right';
+          this.speedX += 1;
+          console.log(this.speedX);
+        }
+        break;
+      case 'x-1':
+        if (this.x > 20) {
+          this.imageId = 'tank-enemy-left';
+          this.speedX -= 1;
+        }
+        break;
+      case 'y+1':
+        if (this.y < 480) {
+          this.imageId = 'tank-enemy-down';
+          this.speedY += 1;
+          console.log(this.speedY);
+        }
+        break;
+      case 'y-1':
+        if (this.y > 20) {
+          this.imageId = 'tank-enemy-up';
+          this.speedY -= 1;
+        }
+        break;
     }
+    // }
   }
 }
 
@@ -154,11 +156,16 @@ const tank = new Component(30, 30, 180, 5);
 
 // Position Steps
 const posStepsX = ['x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1'];
+
 const posStepsA = ['x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1'];
 
 const posStepsB = ['x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1'];
 
 const posStepsC = ['x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1'];
+
+// const posStepsA = []
+// const posStepsB = []
+// const posStepsC = []
 
 // Enemies
 const tankEnemy1 = new TankEnemy(30, 30, 15, 10, posStepsA);
@@ -166,6 +173,11 @@ const tankEnemy2 = new TankEnemy(30, 30, 240, 240, posStepsB);
 const tankEnemy3 = new TankEnemy(30, 30, 450, 10, posStepsC);
 const tankEnemy4 = new TankEnemy(30, 30, 80, 200, posStepsA);
 const tankEnemy5 = new TankEnemy(30, 30, 400, 40, posStepsA);
+
+// const tankEnemy1 = new TankEnemy(30, 30, 450, 10, posStepsC);
+// const tankEnemy2 = new TankEnemy(30, 30, 15, 10, posStepsB);
+// const tankEnemy3 = new TankEnemy(30, 30, 15, 10, posStepsB);
+// const tankEnemy4 = new TankEnemy(30, 30, 15, 10, posStepsB);
 
 const arrEnemies = [tankEnemy1, tankEnemy2, tankEnemy3];
 
@@ -195,14 +207,21 @@ const checkGameOver = () => {
 };
 
 const updateGameArea = () => {
+  myGameArea.frames += 1;
   myGameArea.clear();
   tank.newPos();
   tank.update();
+
+  if (myGameArea.frames % 20 === 0) {
+    arrEnemies.forEach((enemy) => {
+      enemy.posGenerator();
+    });
+  }
   arrEnemies.forEach((enemy) => {
-    enemy.posGenerator();
     enemy.newPos();
     enemy.update();
   });
+
   arrWalls.forEach((wall) => {
     wall.update();
   });
@@ -210,7 +229,7 @@ const updateGameArea = () => {
 };
 
 // start game
-myGameArea.start();
+// myGameArea.start();
 
 document.onkeydown = (e) => {
   // eslint-disable-next-line default-case
@@ -237,4 +256,8 @@ document.onkeydown = (e) => {
 document.onkeyup = () => {
   tank.speedX = 0;
   tank.speedY = 0;
+};
+
+document.getElementById('start-button').onclick = () => {
+  myGameArea.start();
 };
