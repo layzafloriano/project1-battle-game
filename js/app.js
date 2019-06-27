@@ -1,7 +1,9 @@
+/* eslint-disable default-case */
 /* eslint-disable react/no-multi-comp */
 
 // Inicial config
 const canvasBoard = document.getElementById('game-area');
+let arrBullets = [];
 
 // canvasBoard.insertBefore(this.canvas, canvasBoard.childNodes[0]);
 const myGameArea = {
@@ -39,6 +41,7 @@ class Component {
     this.speedX = 0;
     this.speedY = 0;
     this.imageId = 'tank-player-down';
+    this.sideTank = 'down';
   }
 
   // draw tank
@@ -89,6 +92,13 @@ class Component {
       this.right() < wall.left() ||
       this.left() > wall.right()
     );
+  }
+
+  shoot() {
+    if (!shooting) {
+      shooting = true;
+      arrBullets.push(new Bullet(13, 13, this.x, this.y));
+    }
   }
 }
 
@@ -156,6 +166,86 @@ class Wall extends Component {
     myGameArea.context.drawImage(img, this.x, this.y, this.width, this.height);
   }
 }
+
+class Bullet extends Component {
+  constructor(width, height, x, y) {
+    super(width, height, x, y);
+    this.speedX = 6;
+    this.speedY = 6;
+  }
+
+  // draw bullet
+  update() {
+    let coordX;
+    let coordY;
+    let imageId;
+    switch (tank.sideTank) {
+      case 'up':
+        coordX = this.x + tank.width/4;
+        coordY = this.y;
+        imageId = 'bullet-up';
+        break;
+      case 'down':
+        coordX = this.x + tank.width/4;
+        coordY = this.y + tank.height;
+        imageId = 'bullet-down';
+        break;
+      case 'left':
+        coordX = this.x;
+        coordY = this.y + tank.height / 4;
+        imageId = 'bullet-left';
+        break;
+      case 'right':
+        coordX = this.x + tank.width/4;
+        coordY = this.y + tank.height / 4;
+        imageId = 'bullet-right';
+    }
+    const img = document.getElementById(imageId);
+    myGameArea.context.drawImage(img, coordX, coordY, this.width, this.height);
+
+    // myGameArea.context.drawImage(img, this.x, this.y, this.width, this.height);
+  }
+
+  newPos() {
+    // eslint-disable-next-line default-case
+    if (shooting) {
+      // eslint-disable-next-line default-case
+      switch (tank.sideTank) {
+        case 'up':
+          this.y -= this.speedY;
+          break;
+        case 'down':
+          this.y += this.speedY;
+          break;
+        case 'left':
+          this.x -= this.speedX;
+          break;
+        case 'right':
+          this.x += this.speedX;
+          break;
+      }
+    }
+  }
+
+  crashWithEnemy(enemyTank) {
+    return !(
+      this.bottom() < enemyTank.top() ||
+      this.top() > enemyTank.bottom() ||
+      this.right() < enemyTank.left() ||
+      this.left() > enemyTank.right()
+    );
+  }
+
+  crashWithCanvas() {
+    if (this.x > 500 || this.x < 0 || this.y > 500 || this.y < 0) {
+      shooting = false;
+      arrBullets = [];
+    }
+  }
+}
+
+let shooting = false;
+
 // Player
 const tank = new Component(30, 30, 180, 5);
 
@@ -197,6 +287,7 @@ const wall8 = new Wall(50, 160, 370, 290);
 
 const arrWalls = [wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8];
 
+
 // Collision
 const checkGameOver = () => {
   const crashedEnemy = arrEnemies.some(enemyTank => tank.crashWithEnemy(enemyTank));
@@ -205,6 +296,20 @@ const checkGameOver = () => {
     myGameArea.stop();
     const img = document.getElementById('game-over');
     myGameArea.context.drawImage(img, 150, 150, 200, 200);
+  }
+};
+
+const checkEnemyDowned = () => {
+  let crashedEnemy;
+  arrBullets.forEach((bullet) => {
+    crashedEnemy = arrEnemies.some(enemyTank => bullet.crashWithEnemy(enemyTank));
+  });
+  if (crashedEnemy) {
+    const img = document.getElementById('game-over');
+    myGameArea.context.drawImage(img, 150, 150, 200, 200);
+    shooting = false;
+    arrBullets = [];
+    shooting = false;
   }
 };
 
@@ -227,10 +332,16 @@ const updateGameArea = () => {
   arrWalls.forEach((wall) => {
     wall.update();
   });
-  myGameArea.score();
-  checkGameOver();
-};
 
+  arrBullets.forEach((bullet) => {
+    bullet.crashWithCanvas();
+    bullet.update();
+    bullet.newPos();
+  });
+  myGameArea.score();
+  checkEnemyDowned();
+  // checkGameOver();
+};
 
 document.onkeydown = (e) => {
   // eslint-disable-next-line default-case
@@ -238,19 +349,25 @@ document.onkeydown = (e) => {
     case 38: // up arrow
       tank.imageId = 'tank-player-up';
       tank.speedY -= 1;
+      tank.sideTank = 'up';
       break;
     case 40: // down arrow
       tank.imageId = 'tank-player-down';
       tank.speedY += 1;
+      tank.sideTank = 'down';
       break;
     case 37: // left arrow
       tank.imageId = 'tank-player-left';
       tank.speedX -= 1;
+      tank.sideTank = 'left';
       break;
     case 39: // right arrow
       tank.imageId = 'tank-player-right';
       tank.speedX += 1;
+      tank.sideTank = 'right';
       break;
+    case 32:
+      tank.shoot();
   }
 };
 
