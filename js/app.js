@@ -16,6 +16,7 @@ const myGameArea = {
     canvasBoard.insertBefore(this.canvas, canvasBoard.childNodes[3]);
     // eslint-disable-next-line no-use-before-define
     this.interval = setInterval(updateGameArea, 20);
+    this.intervalChron = setInterval(chronometer, 1000);
   },
   clear() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -24,11 +25,10 @@ const myGameArea = {
     clearInterval(this.interval);
   },
   score() {
-    const points = Math.floor(this.frames / 5);
-    this.context.font = '18px arial';
-    this.context.fillStyle = 'white';
-    this.context.fillText(`Score: ${points}`, 400, 40);
-  }
+    myGameArea.context.font = '18px arial';
+    myGameArea.context.fillStyle = 'white';
+    myGameArea.context.fillText(`time: ${minutes}:${seconds}`, 400, 40);
+  },
 };
 
 // Tank player
@@ -110,7 +110,7 @@ class TankEnemy extends Component {
     this.imageId = 'tank-enemy-down';
     this.posSteps = positionSteps;
     this.posIndex = 0;
-    this.health = 3;
+    this.health = 5;
   }
 
   // draw tank enemy
@@ -323,7 +323,19 @@ const checkWin = () => {
   if (arrEnemies.length <= 0) {
     myGameArea.stop();
     const img = document.getElementById('you-win');
-    myGameArea.context.drawImage(img, 150, 150, 200, 200);
+    myGameArea.context.drawImage(img, 160, 170, 150, 160);
+  }
+};
+
+let seconds = 0;
+let minutes = 0;
+let hours = 0;
+
+const chronometer = () => {
+  seconds += 1;
+  if (seconds > 59) {
+    seconds = 0;
+    minutes += 1;
   }
 };
 
@@ -390,6 +402,7 @@ document.onkeyup = () => {
   tank.speedX = 0;
   tank.speedY = 0;
 };
+
 
 const autoStart = () => {
   if (document.location.hash === '#start') {
