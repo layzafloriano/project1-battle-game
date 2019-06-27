@@ -27,7 +27,7 @@ const myGameArea = {
     const points = Math.floor(this.frames / 5);
     this.context.font = '18px arial';
     this.context.fillStyle = 'white';
-    this.context.fillText('Score: ' + points, 400, 40);
+    this.context.fillText(`Score: ${points}`, 400, 40);
   }
 };
 
@@ -110,6 +110,7 @@ class TankEnemy extends Component {
     this.imageId = 'tank-enemy-down';
     this.posSteps = positionSteps;
     this.posIndex = 0;
+    this.health = 3;
   }
 
   // draw tank enemy
@@ -157,10 +158,6 @@ class TankEnemy extends Component {
 }
 
 class Wall extends Component {
-  // constructor(width, height, x, y) {
-  //   super(width, height, x, y)
-  // }
-
   update() {
     const img = document.getElementById('wall');
     myGameArea.context.drawImage(img, this.x, this.y, this.width, this.height);
@@ -170,8 +167,8 @@ class Wall extends Component {
 class Bullet extends Component {
   constructor(width, height, x, y) {
     super(width, height, x, y);
-    this.speedX = 6;
-    this.speedY = 6;
+    this.speedX = 10;
+    this.speedY = 10;
   }
 
   // draw bullet
@@ -288,6 +285,29 @@ const wall8 = new Wall(50, 160, 370, 290);
 const arrWalls = [wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8];
 
 
+const checkEnemyDowned = () => {
+  let crashedEnemy;
+  let index;
+  arrBullets.forEach((bullet) => {
+    crashedEnemy = arrEnemies.some((enemyTank, idx) => {
+      if (bullet.crashWithEnemy(enemyTank)) {
+        index = idx;
+        return true;
+      }
+      return false;
+    });
+  });
+  if (crashedEnemy) {
+    shooting = false;
+    arrBullets = [];
+    shooting = false;
+    arrEnemies[index].health -= 1;
+    if (arrEnemies[index].health <= 0) {
+      arrEnemies.splice(index, 1);
+    }
+  }
+};
+
 // Collision
 const checkGameOver = () => {
   const crashedEnemy = arrEnemies.some(enemyTank => tank.crashWithEnemy(enemyTank));
@@ -299,17 +319,11 @@ const checkGameOver = () => {
   }
 };
 
-const checkEnemyDowned = () => {
-  let crashedEnemy;
-  arrBullets.forEach((bullet) => {
-    crashedEnemy = arrEnemies.some(enemyTank => bullet.crashWithEnemy(enemyTank));
-  });
-  if (crashedEnemy) {
-    const img = document.getElementById('game-over');
+const checkWin = () => {
+  if (arrEnemies.length <= 0) {
+    myGameArea.stop();
+    const img = document.getElementById('you-win');
     myGameArea.context.drawImage(img, 150, 150, 200, 200);
-    shooting = false;
-    arrBullets = [];
-    shooting = false;
   }
 };
 
@@ -340,7 +354,8 @@ const updateGameArea = () => {
   });
   myGameArea.score();
   checkEnemyDowned();
-  // checkGameOver();
+  checkGameOver();
+  checkWin();
 };
 
 document.onkeydown = (e) => {
