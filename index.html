@@ -1,35 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Battle Game</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Battle Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
 </head>
 <body>
   <div id="game-area">
     <div class="title">
         <h1>Battle Game</h1>
-        <button id="start-button">Start</button>
+        <button id="start-button">Start</button> 
         <p>use arrow keys to move the tank</p>
+        <p>press space bar to shoot</p>
+       
     </div>
   </div>
 
-    <p hidden><img src="images/tank_player_down.png" id="tank-player-down" alt=""></p>
-    <p hidden><img src="images/tank_player_up.png" id="tank-player-up" alt=""></p>
-    <p hidden><img src="images/tank_player_left.png" id="tank-player-left" alt=""></p>
-    <p hidden><img src="images/tank_player_right.png" id="tank-player-right" alt=""></p>
+  <p hidden><img src="images/tank_player_down.png" id="tank-player-down" alt=""></p>
+  <p hidden><img src="images/tank_player_up.png" id="tank-player-up" alt=""></p>
+  <p hidden><img src="images/tank_player_left.png" id="tank-player-left" alt=""></p>
+  <p hidden><img src="images/tank_player_right.png" id="tank-player-right" alt=""></p>
 
 
-    <p hidden><img src="images/tank_enemy_down.png" id="tank-enemy-down" alt=""></p>
-    <p hidden><img src="images/tank_enemy_up.png" id="tank-enemy-up" alt=""></p>
-    <p hidden><img src="images/tank_enemy_left.png" id="tank-enemy-left" alt=""></p>
-    <p hidden><img src="images/tank_enemy_right.png" id="tank-enemy-right" alt=""></p>
+  <p hidden><img src="images/tank_enemy_down.png" id="tank-enemy-down" alt=""></p>
+  <p hidden><img src="images/tank_enemy_up.png" id="tank-enemy-up" alt=""></p>
+  <p hidden><img src="images/tank_enemy_left.png" id="tank-enemy-left" alt=""></p>
+  <p hidden><img src="images/tank_enemy_right.png" id="tank-enemy-right" alt=""></p>
 
-    <p hidden><img src="images/wall.png" id="wall" alt=""></p>
+  <p hidden><img src="images/bullet_up.png" id="bullet-up" alt=""></p>
+  <p hidden><img src="images/bullet_down.png" id="bullet-down" alt=""></p>
+  <p hidden><img src="images/bullet_left.png" id="bullet-left" alt=""></p>
+  <p hidden><img src="images/bullet_right.png" id="bullet-right" alt=""></p>
+
+  <p hidden><img src="images/wall.png" id="wall" alt=""></p>
 
   <p hidden><img src="images/game-over.gif" id="game-over" alt=""></p>
-    <script src="js/app.js"></script>
+
+  <p hidden><img src="images/you-win.png" id="you-win" alt=""></p>
+  <script src="js/app.js"></script>
 </body>
 </html>
