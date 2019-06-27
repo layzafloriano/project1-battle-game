@@ -258,12 +258,19 @@ document.onkeyup = () => {
   tank.speedY = 0;
 };
 
-window.onload = () => {
-  document.getElementById('start-button').onclick = () => {
+const autoStart = () => {
+  if (document.location.hash === '#start') {
     myGameArea.start();
-  };
+  }
 };
 
-document.getElementById('reload-button').onclick = () => {
+window.onload = () => {
+  autoStart();
+};
+
+document.getElementById('start-button').onclick = () => {
+  if (document.location.hash !== '#start') {
+    document.location.href = `${document.location}#start`;
+  }
   document.location.reload(true);
 };
