@@ -8,11 +8,28 @@
     <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
 </head>
 <body>
-  <!-- <canvas id="my-canvas" width="500" height="500">
-    Your browser does not support canvas!
-    </canvas> -->
-    <p hidden><img src="images/tank_player1_down_c0_t1.png" id="tank-player" alt=""></p>
-    <p hidden><img src="images/tank_armor_down_c0_t1_f.png" id="tank-enemy" alt=""></p>
+  <div id="game-area">
+    <div class="title">
+        <h1>Battle Game</h1>
+        <button id="start-button">Start</button>
+        <p>use arrow keys to move the tank</p>
+    </div>
+  </div>
+
+    <p hidden><img src="images/tank_player_down.png" id="tank-player-down" alt=""></p>
+    <p hidden><img src="images/tank_player_up.png" id="tank-player-up" alt=""></p>
+    <p hidden><img src="images/tank_player_left.png" id="tank-player-left" alt=""></p>
+    <p hidden><img src="images/tank_player_right.png" id="tank-player-right" alt=""></p>
+
+
+    <p hidden><img src="images/tank_enemy_down.png" id="tank-enemy-down" alt=""></p>
+    <p hidden><img src="images/tank_enemy_up.png" id="tank-enemy-up" alt=""></p>
+    <p hidden><img src="images/tank_enemy_left.png" id="tank-enemy-left" alt=""></p>
+    <p hidden><img src="images/tank_enemy_right.png" id="tank-enemy-right" alt=""></p>
+
+    <p hidden><img src="images/wall.png" id="wall" alt=""></p>
+
+  <p hidden><img src="images/game-over.gif" id="game-over" alt=""></p>
     <script src="js/app.js"></script>
 </body>
 </html>
