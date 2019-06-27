@@ -171,14 +171,17 @@ const posStepsD = ['y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1'
 
 const posStepsE = ['x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x-1', 'x-1'];
 
+const posStepsF = ['y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'x+1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'y-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'y+1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'x-1', 'y-1', 'y-1', 'y-1'];
+
 // Enemies
 const tankEnemy1 = new TankEnemy(30, 30, 15, 10, posStepsA);
 const tankEnemy2 = new TankEnemy(30, 30, 240, 240, posStepsB);
 const tankEnemy3 = new TankEnemy(30, 30, 450, 10, posStepsC);
 const tankEnemy4 = new TankEnemy(30, 30, 235, 460, posStepsD);
 const tankEnemy5 = new TankEnemy(30, 30, 300, 460, posStepsE);
+const tankEnemy6 = new TankEnemy(30, 30, 10, 400, posStepsF);
 
-const arrEnemies = [tankEnemy1, tankEnemy2, tankEnemy3, tankEnemy4, tankEnemy5];
+const arrEnemies = [tankEnemy1, tankEnemy2, tankEnemy3, tankEnemy4, tankEnemy5, tankEnemy6];
 
 // Map
 
@@ -189,7 +192,7 @@ const wall4 = new Wall(50, 160, 390, 50);
 const wall5 = new Wall(50, 160, 60, 290);
 const wall6 = new Wall(50, 160, 170, 290);
 const wall7 = new Wall(50, 160, 280, 290);
-const wall8 = new Wall(50, 160, 390, 290);
+const wall8 = new Wall(50, 160, 370, 290);
 
 
 const arrWalls = [wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8];
@@ -228,8 +231,6 @@ const updateGameArea = () => {
   checkGameOver();
 };
 
-// start game
-// myGameArea.start();
 
 document.onkeydown = (e) => {
   // eslint-disable-next-line default-case
