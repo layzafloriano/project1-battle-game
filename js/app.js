@@ -97,7 +97,7 @@ class Component {
   shoot() {
     if (!shooting) {
       shooting = true;
-      arrBullets.push(new Bullet(13, 13, this.x, this.y));
+      arrBullets.push(new Bullet(6, 6, this.x, this.y));
     }
   }
 }
@@ -167,8 +167,8 @@ class Wall extends Component {
 class Bullet extends Component {
   constructor(width, height, x, y) {
     super(width, height, x, y);
-    this.speedX = 10;
-    this.speedY = 10;
+    this.speedX = 15;
+    this.speedY = 15;
   }
 
   // draw bullet
@@ -178,23 +178,23 @@ class Bullet extends Component {
     let imageId;
     switch (tank.sideTank) {
       case 'up':
-        coordX = this.x + tank.width/4;
+        coordX = this.x + 12;
         coordY = this.y;
         imageId = 'bullet-up';
         break;
       case 'down':
-        coordX = this.x + tank.width/4;
+        coordX = this.x + 12;
         coordY = this.y + tank.height;
         imageId = 'bullet-down';
         break;
       case 'left':
         coordX = this.x;
-        coordY = this.y + tank.height / 4;
+        coordY = this.y + 12;
         imageId = 'bullet-left';
         break;
       case 'right':
-        coordX = this.x + tank.width/4;
-        coordY = this.y + tank.height / 4;
+        coordX = this.x + 12;
+        coordY = this.y + 12;
         imageId = 'bullet-right';
     }
     const img = document.getElementById(imageId);
@@ -298,6 +298,8 @@ const checkEnemyDowned = () => {
     });
   });
   if (crashedEnemy) {
+    const shotAudio = document.getElementById('shotAudio');
+    shotAudio.play();
     shooting = false;
     arrBullets = [];
     shooting = false;
@@ -313,6 +315,8 @@ const checkGameOver = () => {
   const crashedEnemy = arrEnemies.some(enemyTank => tank.crashWithEnemy(enemyTank));
   const crashedWall = arrWalls.some(wall => tank.crashWithWall(wall));
   if (crashedEnemy || crashedWall) {
+    const gameOverAudio = document.getElementById('gameOverAudio');
+    gameOverAudio.play();
     myGameArea.stop();
     const img = document.getElementById('game-over');
     myGameArea.context.drawImage(img, 150, 150, 200, 200);
@@ -324,12 +328,13 @@ const checkWin = () => {
     myGameArea.stop();
     const img = document.getElementById('you-win');
     myGameArea.context.drawImage(img, 160, 170, 150, 160);
+    const winAudio = document.getElementById('winAudio');
+    winAudio.play();
   }
 };
 
 let seconds = 0;
 let minutes = 0;
-let hours = 0;
 
 const chronometer = () => {
   seconds += 1;
