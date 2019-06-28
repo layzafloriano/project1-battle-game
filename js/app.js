@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable default-case */
 /* eslint-disable react/no-multi-comp */
 
@@ -5,7 +6,6 @@
 const canvasBoard = document.getElementById('game-area');
 let arrBullets = [];
 
-// canvasBoard.insertBefore(this.canvas, canvasBoard.childNodes[0]);
 const myGameArea = {
   frames: 0,
   canvas: document.createElement('canvas'),
@@ -14,7 +14,6 @@ const myGameArea = {
     this.canvas.height = 500;
     this.context = this.canvas.getContext('2d');
     canvasBoard.insertBefore(this.canvas, canvasBoard.childNodes[3]);
-    // eslint-disable-next-line no-use-before-define
     this.interval = setInterval(updateGameArea, 20);
     this.intervalChron = setInterval(chronometer, 1000);
   },
@@ -97,7 +96,7 @@ class Component {
   shoot() {
     if (!shooting) {
       shooting = true;
-      arrBullets.push(new Bullet(13, 13, this.x, this.y));
+      arrBullets.push(new Bullet(6, 6, this.x, this.y));
     }
   }
 }
@@ -120,40 +119,28 @@ class TankEnemy extends Component {
   }
 
   posGenerator() {
-    // eslint-disable-next-line default-case
     const posSelec = this.posSteps[this.posIndex];
     this.posIndex = this.posIndex < this.posSteps.length ? this.posIndex + 1 : 0;
     this.speedX = 0;
     this.speedY = 0;
-
-    // eslint-disable-next-line default-case
     switch (posSelec) {
       case 'x+1':
-        if (this.x < 480) {
-          this.imageId = 'tank-enemy-right';
-          this.speedX += 1;
-        }
+        this.imageId = 'tank-enemy-right';
+        this.speedX += 1;
         break;
       case 'x-1':
-        if (this.x > 20) {
-          this.imageId = 'tank-enemy-left';
-          this.speedX -= 1;
-        }
+        this.imageId = 'tank-enemy-left';
+        this.speedX -= 1;
         break;
       case 'y+1':
-        if (this.y < 480) {
-          this.imageId = 'tank-enemy-down';
-          this.speedY += 1;
-        }
+        this.imageId = 'tank-enemy-down';
+        this.speedY += 1;
         break;
       case 'y-1':
-        if (this.y > 20) {
-          this.imageId = 'tank-enemy-up';
-          this.speedY -= 1;
-        }
+        this.imageId = 'tank-enemy-up';
+        this.speedY -= 1;
         break;
     }
-    // }
   }
 }
 
@@ -167,8 +154,8 @@ class Wall extends Component {
 class Bullet extends Component {
   constructor(width, height, x, y) {
     super(width, height, x, y);
-    this.speedX = 10;
-    this.speedY = 10;
+    this.speedX = 15;
+    this.speedY = 15;
   }
 
   // draw bullet
@@ -178,35 +165,31 @@ class Bullet extends Component {
     let imageId;
     switch (tank.sideTank) {
       case 'up':
-        coordX = this.x + tank.width/4;
+        coordX = this.x + 12;
         coordY = this.y;
         imageId = 'bullet-up';
         break;
       case 'down':
-        coordX = this.x + tank.width/4;
+        coordX = this.x + 12;
         coordY = this.y + tank.height;
         imageId = 'bullet-down';
         break;
       case 'left':
         coordX = this.x;
-        coordY = this.y + tank.height / 4;
+        coordY = this.y + 12;
         imageId = 'bullet-left';
         break;
       case 'right':
-        coordX = this.x + tank.width/4;
-        coordY = this.y + tank.height / 4;
+        coordX = this.x + 12;
+        coordY = this.y + 12;
         imageId = 'bullet-right';
     }
     const img = document.getElementById(imageId);
     myGameArea.context.drawImage(img, coordX, coordY, this.width, this.height);
-
-    // myGameArea.context.drawImage(img, this.x, this.y, this.width, this.height);
   }
 
   newPos() {
-    // eslint-disable-next-line default-case
     if (shooting) {
-      // eslint-disable-next-line default-case
       switch (tank.sideTank) {
         case 'up':
           this.y -= this.speedY;
@@ -298,6 +281,8 @@ const checkEnemyDowned = () => {
     });
   });
   if (crashedEnemy) {
+    const shotAudio = document.getElementById('shotAudio');
+    shotAudio.play();
     shooting = false;
     arrBullets = [];
     shooting = false;
@@ -308,11 +293,12 @@ const checkEnemyDowned = () => {
   }
 };
 
-// Collision
 const checkGameOver = () => {
   const crashedEnemy = arrEnemies.some(enemyTank => tank.crashWithEnemy(enemyTank));
   const crashedWall = arrWalls.some(wall => tank.crashWithWall(wall));
   if (crashedEnemy || crashedWall) {
+    const gameOverAudio = document.getElementById('gameOverAudio');
+    gameOverAudio.play();
     myGameArea.stop();
     const img = document.getElementById('game-over');
     myGameArea.context.drawImage(img, 150, 150, 200, 200);
@@ -324,12 +310,13 @@ const checkWin = () => {
     myGameArea.stop();
     const img = document.getElementById('you-win');
     myGameArea.context.drawImage(img, 160, 170, 150, 160);
+    const winAudio = document.getElementById('winAudio');
+    winAudio.play();
   }
 };
 
 let seconds = 0;
 let minutes = 0;
-let hours = 0;
 
 const chronometer = () => {
   seconds += 1;
@@ -371,7 +358,6 @@ const updateGameArea = () => {
 };
 
 document.onkeydown = (e) => {
-  // eslint-disable-next-line default-case
   switch (e.keyCode) {
     case 38: // up arrow
       tank.imageId = 'tank-player-up';
