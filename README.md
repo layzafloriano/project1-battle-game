@@ -4,6 +4,9 @@ Desenvolvido como primeiro projeto do curso Web Development - Ironhack
 
 [Link para o jogo](https://layzafloriano.github.io/project1-battle-game/)
 
+![Screenshot](images/battle-game-inicial.png)
+
+
 ## Objetivo do jogo
 
 O Battle Game é um jogo de tiro, onde o objetivo é destruir os tanques oponentes, no menor tempo possível.
